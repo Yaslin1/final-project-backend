@@ -2,15 +2,29 @@ import { onRequest } from "firebase-functions/v2/https";
 // const logger = require("firebase-functions/logger");
 import express from "express";
 import cors from "cors";
-import { getFiles, addFiles, updateFiles } from "./src/bc-final.js";
+import { getFiles, addFiles, updateFiles, updateAgenda, getAgendas, addAgenda } from "./src/bc-final.js";
 
 const app = express();
-app.use(cors());
+// Add your frontend url to CORS
+const whitelist = ['https://lms-web-yc.web.app', 'http://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/files", getFiles);
 app.post("/files", addFiles);
 app.patch("/files/:uid", updateFiles);
+app.get("/agendas", getAgendas);
+app.post("/agendas", addAgenda);
+app.patch("/agendas/:docId", updateAgenda);
 
 export const api = onRequest(app);
 /**
