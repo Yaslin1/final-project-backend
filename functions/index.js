@@ -6,13 +6,13 @@ import { getFiles, addFiles, updateFiles, updateAgenda, getAgendas, addAgenda } 
 
 const app = express();
 // Add your frontend url to CORS
-const whitelist = ['https://lms-web-yc.web.app', 'http://localhost:3000']
+const whitelist = ['https://lms-web-yc.web.app', 'http://localhost:3000'] // URL allowed to access in app
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+  origin: function (origin, callback) { //Function called when request comes in.
+    if (whitelist.indexOf(origin) !== -1) { //checking if in whitelist
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('Not allowed by CORS')) //if not the links in white list then it doesn't run
     }
   }
 }
